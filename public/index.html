@@ -1,43 +1,236 @@
 <!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <link rel="icon" href="%PUBLIC_URL%/favicon.ico" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="theme-color" content="#000000" />
-    <meta
-      name="description"
-      content="Web site created using create-react-app"
-    />
-    <link rel="apple-touch-icon" href="%PUBLIC_URL%/logo192.png" />
-    <!--
-      manifest.json provides metadata used when your web app is installed on a
-      user's mobile device or desktop. See https://developers.google.com/web/fundamentals/web-app-manifest/
-    -->
-    <link rel="manifest" href="%PUBLIC_URL%/manifest.json" />
-    <!--
-      Notice the use of %PUBLIC_URL% in the tags above.
-      It will be replaced with the URL of the `public` folder during the build.
-      Only files inside the `public` folder can be referenced from the HTML.
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Formulario de Propiedad</title>
+    
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+        }
 
-      Unlike "/favicon.ico" or "favicon.ico", "%PUBLIC_URL%/favicon.ico" will
-      work correctly both with client-side routing and a non-root public URL.
-      Learn how to configure a non-root public URL by running `npm run build`.
-    -->
-    <title>React App</title>
-  </head>
-  <body>
-    <noscript>You need to enable JavaScript to run this app.</noscript>
-    <div id="root"></div>
-    <!--
-      This HTML file is a template.
-      If you open it directly in the browser, you will see an empty page.
+        .container {
+            width: 80%;
+            max-width: 600px;
+            background-color: #fff;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
 
-      You can add webfonts, meta tags, or analytics to this file.
-      The build step will place the bundled scripts into the <body> tag.
+        form {
+            display: flex;
+            flex-direction: column;
+        }
 
-      To begin the development, run `npm start` or `yarn start`.
-      To create a production bundle, use `npm run build` or `yarn build`.
-    -->
-  </body>
+        label {
+            margin-bottom: 8px;
+        }
+
+        select, input {
+            padding: 8px;
+            margin-bottom: 16px;
+        }
+
+        input[type="number"] {
+            width: 60px;
+        }
+
+        button {
+            padding: 10px;
+            background-color: #4caf50;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+
+        .checkbox-group {
+            display: flex;
+            flex-wrap: wrap;
+            margin-bottom: 16px;
+        }
+
+        .checkbox-group label {
+            margin-right: 20px;
+        }
+
+        .especificar-input {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    
+    <div class="container">
+        <form action="/procesar-formulario" method="post">
+            <label for="tipoOperacion">Tipo de Operación:</label>
+            <select name="tipoOperacion">
+                <option value="compra">Compra</option>
+                <option value="venta">Venta</option>
+                <option value="alquiler">Alquiler</option>
+            </select>
+
+            <label for="tipoInmueble">Tipo de Inmueble:</label>
+            <select name="tipoInmueble">
+                <option value="chalet">Chalet</option>
+                <option value="adosado">Adosado</option>
+                <option value="piso">Piso</option>
+                <option value="pareado">Pareado</option>
+            </select>
+
+            <label for="planta">Planta:</label>
+            <input type="text" name="planta">
+
+            <label for="puerta">Puerta:</label>
+            <input type="text" name="puerta">
+
+            <label for="superficieM2">Superficie m2:</label>
+            <input type="number" name="superficieM2" min="1" max="1000">
+
+            <label for="superficieExterior">Superficie Exterior:</label>
+            <input type="number" name="superficieExterior" min="1" max="1000">
+
+            <label for="estadoConservacion">Estado de Conservación:</label>
+            <select name="estadoConservacion">
+                <option value="muyBajo">Muy Bajo</option>
+                <option value="bajo">Bajo</option>
+                <option value="medio">Medio</option>
+                <option value="bueno">Bueno</option>
+                <option value="excelente">Excelente</option>
+                <option value="desconocido">Desconocido</option>
+            </select>
+
+            <label for="acabados">Acabados:</label>
+            <select name="acabados">
+                <option value="muyMalos">Muy Malos</option>
+                <option value="malos">Malos</option>
+                <option value="regulares">Regulares</option>
+                <option value="buenos">Buenos</option>
+                <option value="excelentes">Excelentes</option>
+            </select>
+
+            <label for="dormitorios">Dormitorios:</label>
+            <select name="dormitorios" onchange="showEspecificar('dormitorios')">
+                
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+                <option value="4">4</option>
+                <option value="5">5</option>
+                <option value="6">6</option>
+                <option value="7">7</option>
+                <option value="8">8</option>
+                <option value="9">9</option>
+                <option value="10">10</option>
+                
+                <option value="especificar">Especificar</option>
+            </select>
+            <input type="text" name="especificarDormitorios" class="especificar-input" placeholder="Especificar número">
+
+            <label for="banos">Baños:</label>
+            <select name="banos" onchange="showEspecificar('banos')">
+                
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+                <option value="4">4</option>
+                <option value="5">5</option>
+                <option value="6">6</option>
+                <option value="7">7</option>
+                <option value="8">8</option>
+                <option value="9">9</option>
+                <option value="10">10</option>
+                
+                <option value="especificar">Especificar</option>
+            </select>
+            <input type="text" name="especificarBanos" class="especificar-input" placeholder="Especificar número">
+
+            <div class="checkbox-group">
+                <label><input type="checkbox" name="aireAcondicionado"> Aire Acondicionado</label>
+                <label><input type="checkbox" name="balcon"> Balcón</label>
+                <label><input type="checkbox" name="trastero"> Trastero</label>
+                <label><input type="checkbox" name="ventanasDobleCristal"> Ventanas de Doble Cristal</label>
+                <label><input type="checkbox" name="ascensor"> Ascensor</label>
+                <label><input type="checkbox" name="jardin"> Jardín</label>
+                <label><input type="checkbox" name="gas"> Gas</label>
+                <label><input type="checkbox" name="calefaccion"> Calefacción</label>
+                <label><input type="checkbox" name="piscina"> Piscina</label>
+                <label><input type="checkbox" name="panelesSolares"> Paneles Solares</label>
+                <label><input type="checkbox" name="licenciaTuristica"> Licencia Turística</label>
+                <label><input type="checkbox" name="esquina"> Esquina</label>
+            </div>
+
+            <label for="garaje">Garaje:</label>
+            <select name="garaje">
+                <option value="sin">Sin</option>
+                <option value="interior">Interior</option>
+                <option value="exterior">Exterior</option>
+            </select>
+
+            <label for="velocidadOperacion">Velocidad de Operación:</label>
+            <select name="velocidadOperacion">
+                <option value="1-mes">1 Mes</option>
+                <option value="2-meses">2 Meses</option>
+                <option value="3-meses">3 Meses</option>
+                <option value="6-meses">6 Meses</option>
+                <option value="9-meses">9 Meses</option>
+            </select>
+
+            <label for="motivoValoracion">Motivo de Valoración:</label>
+            <select name="motivoValoracion">
+                <option value="compra">Compra</option>
+                <option value="venta">Venta</option>
+                <option value="alquiler">Alquiler</option>
+                <option value="herencia">Herencia</option>
+                <option value="curiosidad">Curiosidad</option>
+                <option value="estudio">Estudio de Mercado</option>
+                <option value="prueba">Prueba</option>
+            </select>
+
+            <label for="nombre">Nombre:</label>
+            <input type="text" name="nombre" required>
+
+            <label for="apellidos">Apellidos:</label>
+            <input type="text" name="apellidos" required>
+
+            <label for="telefono">Teléfono:</label>
+            <input type="text" name="telefono" required>
+
+            <label for="email">Email:</label>
+            <input type="text" name="email" required>
+
+            <label><input type="checkbox" name="avisoLegal"> Acepto los términos del aviso legal</label>
+
+            <button type="submit">Enviar</button>
+        </form>
+    </div>
+
+    <script>
+        function showEspecificar(elementId) {
+            const select = document.querySelector(`[name="${elementId}"]`);
+            const especificarInput = document.querySelector(`[name="especificar${elementId.charAt(0).toUpperCase() + elementId.slice(1)}"]`);
+
+            if (select.value === "especificar") {
+                especificarInput.style.display = "block";
+            } else {
+                especificarInput.style.display = "none";
+            }
+        }
+    </script>
+
+</body>
 </html>
