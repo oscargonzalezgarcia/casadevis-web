@@ -1,20 +1,38 @@
 import { useState } from "react";
 import { Footer } from "flowbite-react";
-import TopNavbar from "./components/TopNavbar";
+import TopNavbar from "./components/menus/TopNavbar";
 import React from "react";
-import Tab from "./components/Tab";
-import PrimaryButton from "./components/PrimaryButton";
-import FloatingIconLabel from "./components/FloatingIconLabel";
-import { FaArrowRight, FaEnvelope, FaHome, FaPhone, FaUser } from "react-icons/fa";
-import SecondaryButton from "./components/SecondaryButton";
+import Tab from "./components/menus/Tab";
+import PrimaryButton from "./components/buttons/PrimaryButton";
+import FloatingIconLabel from "./components/inputs/FloatingIconLabel";
+import {
+  FaArrowRight,
+  FaEnvelope,
+  FaHome,
+  FaPhone,
+  FaUser,
+} from "react-icons/fa";
+import SecondaryButton from "./components/buttons/SecondaryButton";
 import clsx from "clsx";
 
 export default function App() {
   const [tabIndex, setTabIndex] = useState(0);
   const [name, setName] = useState("");
+  const [error, setError] = useState("");
+
+  function validateContactDetails() {
+    let isValid = false;
+    if(!name) setError("El nombre es obligatorio");
+    else isValid = true;
+
+    return isValid;
+  }
 
   function nextTab() {
-    setTabIndex((prevState) => (prevState < 2 ? prevState + 1 : 0));
+    let isValid = true;
+    if(tabIndex == 0) isValid = validateContactDetails();
+
+    if(isValid) setTabIndex((prevState) => (prevState < 2 ? prevState + 1 : 0));
   }
 
   function prevTab() {
@@ -25,87 +43,90 @@ export default function App() {
     <>
       <div className="flex flex-col h-screen bg-house bg-no-repeat bg-cover">
         <TopNavbar />
-        <div className="flex-grow flex items-center justify-center font-manrope">
-          <div className="bg-green-50 rounded-xl shadow-md w-8/12">
+        <div className="flex-grow flex items-center justify-center font-manrope h-full">
+          <div className="bg-slate-50 rounded-xl shadow-md w-8/12">
             <div className="rounded-t-xl bg-gradient-to-r from-blue-800 from-30% via-blue-600 via-60% to-blue-500 to-90% p-6">
               <h1 className="text-3xl font-semibold text-white">
                 Tasa tu inmueble
               </h1>
             </div>
-            <div className="flex flex-col space-y-8 p-6">
+            <div className="flex flex-col space-y-10 p-6">
               <Tab selectedTab={tabIndex} />
-              {tabIndex == 0 && (
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <FloatingIconLabel
-                    label={"Nombre"}
-                    value={name}
-                    icon={FaUser}
-                  />
-                  <FloatingIconLabel
-                    label={"Apellidos"}
-                    value={name}
-                    icon={FaUser}
-                  />
-                  <FloatingIconLabel
-                    label={"Correo"}
-                    value={name}
-                    icon={FaEnvelope}
-                  />
-                  <FloatingIconLabel
-                    label={"Teléfono"}
-                    value={name}
-                    icon={FaPhone}
-                  />
-                </div>
-              )}
-              {tabIndex == 1 && (
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <FloatingIconLabel
-                    label={"Tipo de Inmueble"}
-                    value={name}
-                    icon={FaUser}
-                  />
-                  <FloatingIconLabel
-                    label={"Localización"}
-                    value={name}
-                    icon={FaUser}
-                  />
-                  <FloatingIconLabel
-                    label={"Correo"}
-                    value={name}
-                    icon={FaEnvelope}
-                  />
-                  <FloatingIconLabel
-                    label={"Teléfono"}
-                    value={name}
-                    icon={FaPhone}
-                  />
-                </div>
-              )}
-              {tabIndex == 2 && (
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <FloatingIconLabel
-                    label={"Tipo de Inmueble"}
-                    value={name}
-                    icon={FaUser}
-                  />
-                  <FloatingIconLabel
-                    label={"Localización"}
-                    value={name}
-                    icon={FaUser}
-                  />
-                  <FloatingIconLabel
-                    label={"Correo"}
-                    value={name}
-                    icon={FaEnvelope}
-                  />
-                  <FloatingIconLabel
-                    label={"Teléfono"}
-                    value={name}
-                    icon={FaPhone}
-                  />
-                </div>
-              )}
+              <p className={clsx("text-red-500 text-sm font-extrabold h-1", {"invisible": !error})}>{error}</p>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                {tabIndex == 0 && (
+                  <>
+                    <FloatingIconLabel
+                      label={"Nombre"}
+                      onChange={setName}
+                      icon={FaUser}
+                    />
+                    <FloatingIconLabel
+                      label={"Apellidos"}
+                      onChange={setName}
+                      icon={FaUser}
+                    />
+                    <FloatingIconLabel
+                      label={"Correo"}
+                      onChange={setName}
+                      icon={FaEnvelope}
+                    />
+                    <FloatingIconLabel
+                      label={"Teléfono"}
+                      onChange={setName}
+                      icon={FaPhone}
+                    />
+                  </>
+                )}
+                {tabIndex == 1 && (
+                  <>
+                    <FloatingIconLabel
+                      label={"Tipo de Inmueble"}
+                      onChange={setName}
+                      icon={FaUser}
+                    />
+                    <FloatingIconLabel
+                      label={"Localización"}
+                      onChange={setName}
+                      icon={FaUser}
+                    />
+                    <FloatingIconLabel
+                      label={"Correo"}
+                      onChange={setName}
+                      icon={FaEnvelope}
+                    />
+                    <FloatingIconLabel
+                      label={"Teléfono"}
+                      onChange={setName}
+                      icon={FaPhone}
+                    />
+                  </>
+                )}
+                {tabIndex == 2 && (
+                  <>
+                    <FloatingIconLabel
+                      label={"Tipo de Inmueble"}
+                      onChange={setName}
+                      icon={FaUser}
+                    />
+                    <FloatingIconLabel
+                      label={"Localización"}
+                      onChange={setName}
+                      icon={FaUser}
+                    />
+                    <FloatingIconLabel
+                      label={"Correo"}
+                      onChange={setName}
+                      icon={FaEnvelope}
+                    />
+                    <FloatingIconLabel
+                      label={"Teléfono"}
+                      onChange={setName}
+                      icon={FaPhone}
+                    />
+                  </>
+                )}
+              </div>
               <div
                 className={clsx(
                   "flex",
@@ -116,7 +137,11 @@ export default function App() {
                 {tabIndex > 0 && (
                   <SecondaryButton text={"Atrás"} onClick={prevTab} />
                 )}
-                <PrimaryButton text={tabIndex < 2 ? "Siguiente" : "Tasar"} icon={tabIndex < 2 ? FaArrowRight : FaHome} onClick={nextTab} />
+                <PrimaryButton
+                  text={tabIndex < 2 ? "Siguiente" : "Tasar"}
+                  icon={tabIndex < 2 ? FaArrowRight : FaHome}
+                  onClick={nextTab}
+                />
               </div>
             </div>
           </div>
