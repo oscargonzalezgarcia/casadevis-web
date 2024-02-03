@@ -14,25 +14,50 @@ import {
 } from "react-icons/fa";
 import SecondaryButton from "./components/buttons/SecondaryButton";
 import clsx from "clsx";
+import ContactDetails from "./components/forms/ContactDetails";
+import EstateDetails from "./components/forms/EstateDetails";
+import {
+  validateEmail,
+  validateName,
+  validatePhone,
+  validateSurname,
+} from "./utils/commonUtils";
 
 export default function App() {
   const [tabIndex, setTabIndex] = useState(0);
-  const [name, setName] = useState("");
   const [error, setError] = useState("");
+
+  const [name, setName] = useState("");
+  const [surname, setSurname] = useState("");
+  const [email, setEmail] = useState("");
+  const [phone, setPhone] = useState("");
 
   function validateContactDetails() {
     let isValid = false;
-    if(!name) setError("El nombre es obligatorio");
-    else isValid = true;
+
+    if (!name) setError("El nombre es obligatorio");
+    else if (!validateName(name)) setError("El nombre no es válido");
+    else if (!surname) setError("El apellido es obligatorio");
+    else if (!validateSurname(surname)) setError("El apellido no es válido");
+    else if (!email) setError("El correo electrónico es obligatorio");
+    else if (!validateEmail(email))
+      setError("El correo electrónico no es válido");
+    else if (!phone) setError("El teléfono es obligatorio");
+    else if (!validatePhone(phone)) setError("El teléfono no es válido");
+    else {
+      isValid = true;
+      setError("");
+    }
 
     return isValid;
   }
 
   function nextTab() {
     let isValid = true;
-    if(tabIndex == 0) isValid = validateContactDetails();
+    if (tabIndex == 0) isValid = validateContactDetails();
 
-    if(isValid) setTabIndex((prevState) => (prevState < 2 ? prevState + 1 : 0));
+    if (isValid)
+      setTabIndex((prevState) => (prevState < 2 ? prevState + 1 : 0));
   }
 
   function prevTab() {
@@ -41,7 +66,7 @@ export default function App() {
 
   return (
     <>
-      <div className="flex flex-col h-screen bg-house bg-no-repeat bg-cover">
+      <div className="flex flex-col h-screen bg-gray-700">
         <TopNavbar />
         <div className="flex-grow flex items-center justify-center font-manrope h-full">
           <div className="bg-slate-50 rounded-xl shadow-md w-8/12">
@@ -52,79 +77,49 @@ export default function App() {
             </div>
             <div className="flex flex-col space-y-10 p-6">
               <Tab selectedTab={tabIndex} />
-              <p className={clsx("text-red-500 text-sm font-extrabold h-1", {"invisible": !error})}>{error}</p>
+              <p
+                className={clsx("text-red-500 text-sm font-extrabold h-1", {
+                  invisible: !error,
+                })}
+              >
+                {error}
+              </p>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 {tabIndex == 0 && (
-                  <>
-                    <FloatingIconLabel
-                      label={"Nombre"}
-                      onChange={setName}
-                      icon={FaUser}
-                    />
-                    <FloatingIconLabel
-                      label={"Apellidos"}
-                      onChange={setName}
-                      icon={FaUser}
-                    />
-                    <FloatingIconLabel
-                      label={"Correo"}
-                      onChange={setName}
-                      icon={FaEnvelope}
-                    />
-                    <FloatingIconLabel
-                      label={"Teléfono"}
-                      onChange={setName}
-                      icon={FaPhone}
-                    />
-                  </>
+                  <ContactDetails
+                    name={name}
+                    surname={surname}
+                    email={email}
+                    phone={phone}
+                    onNameChange={(value) => setName(value)}
+                    onSurnameChange={(value) => setSurname(value)}
+                    onEmailChange={(value) => setEmail(value)}
+                    onPhoneChange={(value) => setPhone(value)}
+                  />
                 )}
                 {tabIndex == 1 && (
-                  <>
-                    <FloatingIconLabel
-                      label={"Tipo de Inmueble"}
-                      onChange={setName}
-                      icon={FaUser}
-                    />
-                    <FloatingIconLabel
-                      label={"Localización"}
-                      onChange={setName}
-                      icon={FaUser}
-                    />
-                    <FloatingIconLabel
-                      label={"Correo"}
-                      onChange={setName}
-                      icon={FaEnvelope}
-                    />
-                    <FloatingIconLabel
-                      label={"Teléfono"}
-                      onChange={setName}
-                      icon={FaPhone}
-                    />
-                  </>
+                  <EstateDetails
+                    name={name}
+                    surname={surname}
+                    email={email}
+                    phone={phone}
+                    onNameChange={(value) => setName(value)}
+                    onSurnameChange={(value) => setSurname(value)}
+                    onEmailChange={(value) => setEmail(value)}
+                    onPhoneChange={(value) => setPhone(value)}
+                  />
                 )}
                 {tabIndex == 2 && (
-                  <>
-                    <FloatingIconLabel
-                      label={"Tipo de Inmueble"}
-                      onChange={setName}
-                      icon={FaUser}
-                    />
-                    <FloatingIconLabel
-                      label={"Localización"}
-                      onChange={setName}
-                      icon={FaUser}
-                    />
-                    <FloatingIconLabel
-                      label={"Correo"}
-                      onChange={setName}
-                      icon={FaEnvelope}
-                    />
-                    <FloatingIconLabel
-                      label={"Teléfono"}
-                      onChange={setName}
-                      icon={FaPhone}
-                    />
-                  </>
+                  <ContactDetails
+                    name={name}
+                    surname={surname}
+                    email={email}
+                    phone={phone}
+                    onNameChange={(value) => setName(value)}
+                    onSurnameChange={(value) => setSurname(value)}
+                    onEmailChange={(value) => setEmail(value)}
+                    onPhoneChange={(value) => setPhone(value)}
+                  />
                 )}
               </div>
               <div
