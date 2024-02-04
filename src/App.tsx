@@ -4,24 +4,19 @@ import TopNavbar from "./components/menus/TopNavbar";
 import React from "react";
 import Tab from "./components/menus/Tab";
 import PrimaryButton from "./components/buttons/PrimaryButton";
-import FloatingIconLabel from "./components/inputs/FloatingIconLabel";
-import {
-  FaArrowRight,
-  FaEnvelope,
-  FaHome,
-  FaPhone,
-  FaUser,
-} from "react-icons/fa";
+import { FaArrowRight, FaHome } from "react-icons/fa";
 import SecondaryButton from "./components/buttons/SecondaryButton";
 import clsx from "clsx";
 import ContactDetails from "./components/forms/ContactDetails";
-import EstateDetails from "./components/forms/EstateDetails";
+import LocationDetails from "./components/forms/LocationDetails";
 import {
   validateEmail,
   validateName,
   validatePhone,
   validateSurname,
 } from "./utils/commonUtils";
+import EstateDetails from "./components/forms/EstateDetails";
+import FeaturesDetails from "./components/forms/FeaturesDetails";
 
 export default function App() {
   const [tabIndex, setTabIndex] = useState(0);
@@ -31,6 +26,11 @@ export default function App() {
   const [surname, setSurname] = useState("");
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
+
+  const [address, setAddress] = useState("");
+  const [zipCode, setZipCode] = useState("");
+  const [city, setCity] = useState("");
+  const [province, setProvince] = useState("");
 
   function validateContactDetails() {
     let isValid = false;
@@ -56,17 +56,27 @@ export default function App() {
     let isValid = true;
     if (tabIndex == 0) isValid = validateContactDetails();
 
-    if (isValid)
-      setTabIndex((prevState) => (prevState < 2 ? prevState + 1 : 0));
+    if (!isValid) return;
+    else if (tabIndex < 3)
+      setTabIndex((prevState) => (prevState < 3 ? prevState + 1 : 0));
+    else sendEmail();
   }
+
+  function sendEmail() {}
 
   function prevTab() {
     setTabIndex((prevState) => prevState - 1);
   }
 
+  const handleSelectedFeaturesChange = (
+    updatedFeatures: { name: string; checked: boolean }[]
+  ) => {
+    console.log("Updated features:", updatedFeatures);
+  };
+
   return (
     <>
-      <div className="flex flex-col h-screen bg-gray-700">
+      <div className="flex flex-col h-screen bg-blue-300">
         <TopNavbar />
         <div className="flex-grow flex items-center justify-center font-manrope h-full">
           <div className="bg-slate-50 rounded-xl shadow-md w-8/12">
@@ -84,7 +94,7 @@ export default function App() {
               >
                 {error}
               </p>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
                 {tabIndex == 0 && (
                   <ContactDetails
                     name={name}
@@ -98,27 +108,32 @@ export default function App() {
                   />
                 )}
                 {tabIndex == 1 && (
-                  <EstateDetails
-                    name={name}
-                    surname={surname}
-                    email={email}
-                    phone={phone}
-                    onNameChange={(value) => setName(value)}
-                    onSurnameChange={(value) => setSurname(value)}
-                    onEmailChange={(value) => setEmail(value)}
-                    onPhoneChange={(value) => setPhone(value)}
+                  <LocationDetails
+                    address={address}
+                    zipCode={zipCode}
+                    city={city}
+                    province={province}
+                    onAddressChange={(value) => setAddress(value)}
+                    onZipCodeChange={(value) => setZipCode(value)}
+                    onCityChange={(value) => setCity(value)}
+                    onProvinceChange={(value) => setProvince(value)}
                   />
                 )}
                 {tabIndex == 2 && (
-                  <ContactDetails
-                    name={name}
-                    surname={surname}
-                    email={email}
-                    phone={phone}
-                    onNameChange={(value) => setName(value)}
-                    onSurnameChange={(value) => setSurname(value)}
-                    onEmailChange={(value) => setEmail(value)}
-                    onPhoneChange={(value) => setPhone(value)}
+                  <EstateDetails
+                    address={address}
+                    zipCode={zipCode}
+                    city={city}
+                    province={province}
+                    onAddressChange={(value) => setAddress(value)}
+                    onZipCodeChange={(value) => setZipCode(value)}
+                    onCityChange={(value) => setCity(value)}
+                    onProvinceChange={(value) => setProvince(value)}
+                  />
+                )}
+                {tabIndex == 3 && (
+                  <FeaturesDetails
+                    onSelectedFeaturesChange={handleSelectedFeaturesChange}
                   />
                 )}
               </div>
@@ -133,8 +148,8 @@ export default function App() {
                   <SecondaryButton text={"Atrás"} onClick={prevTab} />
                 )}
                 <PrimaryButton
-                  text={tabIndex < 2 ? "Siguiente" : "Tasar"}
-                  icon={tabIndex < 2 ? FaArrowRight : FaHome}
+                  text={tabIndex < 3 ? "Siguiente" : "Tasar"}
+                  icon={tabIndex < 3 ? FaArrowRight : FaHome}
                   onClick={nextTab}
                 />
               </div>

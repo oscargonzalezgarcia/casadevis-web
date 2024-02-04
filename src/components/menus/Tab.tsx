@@ -1,5 +1,5 @@
 import React from "react";
-import { FaHome, FaAddressBook, FaEuroSign } from "react-icons/fa";
+import { FaHome, FaAddressBook, FaMapMarkerAlt, FaPlus } from "react-icons/fa";
 import { clsx } from "clsx";
 
 export default function Tab({ selectedTab }: { selectedTab: number }) {
@@ -12,7 +12,7 @@ export default function Tab({ selectedTab }: { selectedTab: number }) {
         })}
       >
         <FaAddressBook />
-        Datos de contacto
+        Contacto
       </div>
       <div
         className={clsx("flex items-center gap-x-2 p-2 transition ease-in-out duration-200", {
@@ -20,8 +20,8 @@ export default function Tab({ selectedTab }: { selectedTab: number }) {
           "text-slate-300": selectedTab !== 1,
         })}
       >
-        <FaHome />
-        Datos del inmueble
+        <FaMapMarkerAlt />
+        Ubicación
       </div>
       <div
         className={clsx("flex items-center gap-x-2 p-2 transition ease-in-out duration-200", {
@@ -29,8 +29,17 @@ export default function Tab({ selectedTab }: { selectedTab: number }) {
           "text-slate-300": selectedTab !== 2,
         })}
       >
-        <FaEuroSign />
-        Tasación
+        <FaHome />
+        Inmueble
+      </div>
+      <div
+        className={clsx("flex items-center gap-x-2 p-2 transition ease-in-out duration-200", {
+          "border-b-2 border-blue-500 text-blue-500": selectedTab == 3,
+          "text-slate-300": selectedTab !== 3,
+        })}
+      >
+        <FaPlus />
+        Extras
       </div>
     </div>
   );

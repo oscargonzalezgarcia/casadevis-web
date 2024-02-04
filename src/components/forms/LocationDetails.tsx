@@ -1,19 +1,20 @@
 import React, { useState } from "react";
 import FloatingIconLabel from "../inputs/FloatingIconLabel";
 import {
-  FaArrowsAlt,
-  FaArrowsAltV,
   FaAt,
-  FaBath,
-  FaBed,
+  FaBuilding,
+  FaCity,
+  FaDoorClosed,
+  FaMap,
   FaMapMarkedAlt,
+  FaMapPin,
   FaMarker,
   FaPhone,
   FaUser,
 } from "react-icons/fa";
 import { Label, Select } from "flowbite-react";
 
-export default function EstateDetails({
+export default function LocationDetails({
   address,
   zipCode,
   city,
@@ -36,64 +37,62 @@ export default function EstateDetails({
 
   return (
     <>
-      <div className="col-span-1 flex flex-col space-y-2 font-manrope">
+      <div className="col-span-2 flex flex-col space-y-2 font-manrope">
         <div>
-          <Label htmlFor="condition" value="Estado de conservación" />
+          <Label htmlFor="estates" value="Tipo de inmueble" />
         </div>
         <Select
-          id="condition"
+          id="estates"
           required
           onChange={(event: React.ChangeEvent<HTMLSelectElement>) =>
             setSelectedEstate(Number(event.target.value))
           }
         >
-          <option value={0}>Muy alto</option>
-          <option value={1}>Alto</option>
-          <option value={2}>Bajo</option>
-          <option value={2}>Muy bajo</option>
-        </Select>
-      </div>
-      <div className="col-span-1 flex flex-col space-y-2 font-manrope">
-        <div>
-          <Label htmlFor="finishes" value="Acabados" />
-        </div>
-        <Select
-          id="finishes"
-          required
-          onChange={(event: React.ChangeEvent<HTMLSelectElement>) =>
-            setSelectedEstate(Number(event.target.value))
-          }
-        >
-          <option value={0}>Muy buenos</option>
-          <option value={1}>Buenos</option>
-          <option value={2}>Malos</option>
-          <option value={2}>Muy malos</option>
+          <option value={0}>Casa</option>
+          <option value={1}>Chalet</option>
+          <option value={2}>Piso</option>
         </Select>
       </div>
       <FloatingIconLabel
-        label={"Superficie interior (m2)"}
+        label={"Dirección"}
         onChange={onAddressChange}
-        icon={FaArrowsAlt}
+        icon={FaMapMarkedAlt}
         value={address}
       />
       <FloatingIconLabel
-        label={"Superficie exterior (m2)"}
+        label={"Código postal"}
         onChange={onZipCodeChange}
-        icon={FaArrowsAlt}
+        icon={FaMapPin}
         value={zipCode}
       />
       <FloatingIconLabel
-        label={"Dormitorios"}
+        label={"Localidad"}
         onChange={onCityChange}
-        icon={FaBed}
+        icon={FaCity}
         value={city}
       />
       <FloatingIconLabel
-        label={"Baños"}
+        label={"Provincia"}
         onChange={onProvinceChange}
-        icon={FaBath}
+        icon={FaMap}
         value={province}
       />
+      {selectedEstate == 2 && (
+        <>
+          <FloatingIconLabel
+            label={"Planta"}
+            onChange={onProvinceChange}
+            icon={FaBuilding}
+            value={province}
+          />
+          <FloatingIconLabel
+            label={"Puerta"}
+            onChange={onProvinceChange}
+            icon={FaDoorClosed}
+            value={province}
+          />
+        </>
+      )}
     </>
   );
 }
