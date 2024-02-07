@@ -10,7 +10,7 @@ module.exports = {
         'manrope': ['Manrope', 'sans-serif'],
       },
       backgroundImage: {
-        'house': "url(/public/images/sky.jpg)",
+        'house': "url(/public/images/skyline-2.jpg)",
       },
     },
   },

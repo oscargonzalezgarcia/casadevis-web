@@ -21,6 +21,7 @@ export default function FeaturesDetails({
     { name: "Paneles solares", checked: false },
     { name: "Licencia turística", checked: false },
     { name: "Esquina", checked: false },
+    { name: "Garaje", checked: false },
   ];
 
   const [features, setFeatures] = useState<any[]>([]);

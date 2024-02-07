@@ -8,38 +8,38 @@ export default function Tab({ selectedTab }: { selectedTab: number }) {
       <div
         className={clsx("flex items-center gap-x-2 p-2 transition ease-in-out duration-200", {
           "border-b-2 border-blue-500 text-blue-500": selectedTab == 0,
-          "text-slate-300": selectedTab !== 0,
+          "text-slate-300 hidden md:flex": selectedTab !== 0,
         })}
       >
         <FaAddressBook />
-        Contacto
+        <span className="hidden md:inline">Contacto</span>
       </div>
       <div
         className={clsx("flex items-center gap-x-2 p-2 transition ease-in-out duration-200", {
           "border-b-2 border-blue-500 text-blue-500": selectedTab == 1,
-          "text-slate-300": selectedTab !== 1,
+          "text-slate-300 hidden md:flex": selectedTab !== 1,
         })}
       >
         <FaMapMarkerAlt />
-        Ubicación
+        <span className="hidden md:inline">Ubicación</span>
       </div>
       <div
         className={clsx("flex items-center gap-x-2 p-2 transition ease-in-out duration-200", {
           "border-b-2 border-blue-500 text-blue-500": selectedTab == 2,
-          "text-slate-300": selectedTab !== 2,
+          "text-slate-300 hidden md:flex": selectedTab !== 2,
         })}
       >
         <FaHome />
-        Inmueble
+        <span className="hidden md:inline">Inmueble</span>
       </div>
       <div
         className={clsx("flex items-center gap-x-2 p-2 transition ease-in-out duration-200", {
           "border-b-2 border-blue-500 text-blue-500": selectedTab == 3,
-          "text-slate-300": selectedTab !== 3,
+          "text-slate-300 hidden md:flex": selectedTab !== 3,
         })}
       >
         <FaPlus />
-        Extras
+        <span className="hidden md:inline">Extras</span>
       </div>
     </div>
   );

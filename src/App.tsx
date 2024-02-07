@@ -12,11 +12,14 @@ import LocationDetails from "./components/forms/LocationDetails";
 import {
   validateEmail,
   validateName,
+  validateNumber,
   validatePhone,
   validateSurname,
+  validateText,
 } from "./utils/commonUtils";
 import EstateDetails from "./components/forms/EstateDetails";
 import FeaturesDetails from "./components/forms/FeaturesDetails";
+import axios from "axios";
 
 export default function App() {
   const [tabIndex, setTabIndex] = useState(0);
@@ -52,9 +55,28 @@ export default function App() {
     return isValid;
   }
 
+  function validateLocationDetails() {
+    let isValid = false;
+
+    if (!address) setError("La dirección es obligatoria");
+    else if (!zipCode) setError("El código postal es obligatorio");
+    else if (!validateNumber(zipCode)) setError("El código postal no es válido");
+    else if (!city) setError("La ciudad es obligatoria");
+    else if (!validateText(city)) setError("La ciudad no es válida");
+    else if (!province) setError("La provincia es obligatoria");
+    else if (!validateText(province)) setError("La provincia no es valida");
+    else {
+      isValid = true;
+      setError("");
+    }
+
+    return isValid;
+  }
+
   function nextTab() {
     let isValid = true;
     if (tabIndex == 0) isValid = validateContactDetails();
+    else if(tabIndex == 1) isValid = validateLocationDetails();
 
     if (!isValid) return;
     else if (tabIndex < 3)
@@ -62,9 +84,27 @@ export default function App() {
     else sendEmail();
   }
 
-  function sendEmail() {}
+  async function sendEmail() {
+    try {
+      await axios.post('http://localhost:3001/send-email', {
+        to: email,
+        html: `
+          <div>
+            <p><strong>Nombre:</strong> ${name}</p>
+            <p><strong>Correo electrónico:</strong> ${email}</p>
+            <p><strong>Teléfono:</strong> ${phone}</p>
+          </div>
+        `
+      });
+      alert('Email sent successfully!');
+    } catch (error) {
+      console.error('Error sending email:', error);
+      alert('Failed to send email.');
+    }
+  };
 
   function prevTab() {
+    setError("");
     setTabIndex((prevState) => prevState - 1);
   }
 
@@ -76,7 +116,7 @@ export default function App() {
 
   return (
     <>
-      <div className="flex flex-col h-screen bg-blue-300">
+      <div className="flex flex-col h-screen bg-house bg-cover bg-no-repeat">
         <TopNavbar />
         <div className="flex-grow flex items-center justify-center font-manrope h-full">
           <div className="bg-slate-50 rounded-xl shadow-md w-8/12">
@@ -150,7 +190,7 @@ export default function App() {
                 <PrimaryButton
                   text={tabIndex < 3 ? "Siguiente" : "Tasar"}
                   icon={tabIndex < 3 ? FaArrowRight : FaHome}
-                  onClick={nextTab}
+                  onClick={tabIndex < 3 ? nextTab : sendEmail}
                 />
               </div>
             </div>
